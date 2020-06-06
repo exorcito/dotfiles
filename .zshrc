@@ -1,4 +1,4 @@
-export TERM="xterm-256color"
+#export TERM="xterm-256color"
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
@@ -19,6 +19,25 @@ export ZSH="/home/exorcito/.oh-my-zsh"
 ZSH_THEME="agnoster"
 #ZSH_THEME=powerlevel10k/powerlevel10k
 
+# ----- keys -----
+bindkey '^[[2~' overwrite-mode
+bindkey '^[[3~' delete-char
+bindkey '^[[H' beginning-of-line
+bindkey '^[[1~' beginning-of-line
+bindkey '^[[F' end-of-line
+bindkey '^[[4~' end-of-line
+bindkey '^[[1;5C' forward-word
+bindkey '^[[1;5D' backward-word
+bindkey '^[[3;5~' kill-word
+bindkey '^[[5~' beginning-of-buffer-or-history
+bindkey '^[[6~' end-of-buffer-or-history
+
+HISTFILE="$HOME/.cache/zsh_history"
+HIST_STAMPS=mm/dd/yyyy
+DISABLE_UPDATE_PROMPT=true
+HISTSIZE=5000
+SAVEHIST=5000
+ZLE_RPROMPT_INDENT=0
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -78,7 +97,8 @@ ZSH_THEME="agnoster"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git docker docker-compose autojump dnf npm nvm ansible zsh-autosuggestions zsh-completions)
+#plugins=(git zsh-autosuggestions zsh-completions colorize zsh-syntax-highlighting)
+#plugins=(git zsh-autosuggestions)
 
 source $ZSH/oh-my-zsh.sh
 

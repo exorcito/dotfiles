@@ -1,0 +1,55 @@
+#!/bin/bash
+
+# System date
+DATE=`date`
+
+# System uptime
+uptime=`cat /proc/uptime | cut -f1 -d.`
+upDays=$((uptime/60/60/24))
+upHours=$((uptime/60/60%24))
+upMins=$((uptime/60%60))
+upSecs=$((uptime%60))
+UPTIME="${upDays}d ${upHours}h ${upMins}m ${upSecs}s"
+
+# Basic info
+HOSTNAME_UC=`echo $HOSTNAME | awk '{print toupper($0)}'`
+
+# Internet Infos
+INTERNET_IP=$(curl -s https://iplist.cc/api | jq -r '.ip')
+
+
+# Release info
+[ -r /etc/lsb-release ] && . /etc/lsb-release
+
+if [ -z "$DISTRIB_DESCRIPTION" ] && [ -x /usr/bin/lsb_release ]; then
+        # Fall back to using the very slow lsb_release utility
+        DISTRIB_DESCRIPTION=$(lsb_release -s -d)
+fi
+echo
+printf "Welcome to %s (%s %s %s)\n" "$DISTRIB_DESCRIPTION" "$(uname -o)" "$(uname -r)" "$(uname -m)"
+echo
+
+# Hostname info
+figlet "DEV - " $HOSTNAME
+
+# System info
+echo -e
+cores=$(grep -c ^processor /proc/cpuinfo 2>/dev/null)
+[ "$cores" -eq "0" ] && cores=1
+threshold="${cores:-1}.0"
+if [ $(echo "`cut -f1 -d ' ' /proc/loadavg` < $threshold" | bc) -eq 1 ]; then
+    echo
+    echo -n "  System information as of "
+    /bin/date
+    echo
+    /usr/bin/landscape-sysinfo
+else
+    echo
+    echo " System information disabled due to load higher than $threshold"
+fi
+echo -e "  IP on Internet: $INTERNET_IP    Uptime:                   $UPTIME"
+echo
+
+echo
+    df -Ph /
+echo

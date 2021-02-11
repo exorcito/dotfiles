@@ -1,4 +1,3 @@
-#export TERM="xterm-256color"
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
@@ -8,36 +7,16 @@ fi
 
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
-ZSH_DISABLE_COMPFIX=true
+
 # Path to your oh-my-zsh installation.
 export ZSH="/home/exorcito/.oh-my-zsh"
-#source $HOME/.p9kgt
+
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="agnoster"
-#ZSH_THEME=powerlevel10k/powerlevel10k
-
-# ----- keys -----
-bindkey '^[[2~' overwrite-mode
-bindkey '^[[3~' delete-char
-bindkey '^[[H' beginning-of-line
-bindkey '^[[1~' beginning-of-line
-bindkey '^[[F' end-of-line
-bindkey '^[[4~' end-of-line
-bindkey '^[[1;5C' forward-word
-bindkey '^[[1;5D' backward-word
-bindkey '^[[3;5~' kill-word
-bindkey '^[[5~' beginning-of-buffer-or-history
-bindkey '^[[6~' end-of-buffer-or-history
-
-HISTFILE="$HOME/.cache/zsh_history"
-HIST_STAMPS=mm/dd/yyyy
-DISABLE_UPDATE_PROMPT=true
-HISTSIZE=5000
-SAVEHIST=5000
-ZLE_RPROMPT_INDENT=0
+ZSH_THEME="powerlevel10k/powerlevel10k"
+#ZSH_THEME="agnoster"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -97,12 +76,12 @@ ZLE_RPROMPT_INDENT=0
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-#plugins=(git zsh-autosuggestions zsh-completions colorize zsh-syntax-highlighting)
-#plugins=(git zsh-autosuggestions)
-
+plugins=(git zsh-autosuggestions zsh-completions colorize zsh-syntax-highlighting)
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
+
+export contabo='ssh root@173.212.244.145'
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
@@ -130,3 +109,6 @@ source $ZSH/oh-my-zsh.sh
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+autoload -U +X bashcompinit && bashcompinit
+complete -o nospace -C /usr/bin/terraform terraform

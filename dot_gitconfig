@@ -1,0 +1,25 @@
+[user]
+	email = exorcito@gmail.com
+	name = exorcito
+
+[alias]
+    cm = commit -am
+    st = status
+    co = checkout
+    amend = commit --amend -s
+    commit = commit -s
+
+    branches = branch -a
+    tags = tag
+    stashes = stash list
+
+    unstage = reset -q HEAD --
+    discard = checkout --
+    uncommit = reset --mixed HEAD~
+    pr = !"pr() { git fetch origin pull/$1/head:pr-$1; git checkout pr-$1; }; pr"
+
+[push]
+    default = matching
+
+[rebase]
+    autoStash = true

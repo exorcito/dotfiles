@@ -53,10 +53,4 @@ Cada grupo de dotfiles está en su propia carpeta:
 5. Personaliza los archivos locales si lo necesitas antes de aplicar Stow.
 
 ## Notas
-- Puedes añadir o quitar carpetas según tus necesidades.
-- Los dotfiles detectan automáticamente herramientas modernas si están instaladas.
-- Para personalizaciones privadas, usa archivos locales (por ejemplo, `.tmux.conf.local`).
-
----
-
-**¡Disfruta de tu entorno shell optimizado y multiplataforma!** 
+- Los dotfiles detectan automáticamente las herramientas si están instaladas.

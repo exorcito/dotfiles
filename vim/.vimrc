@@ -3,35 +3,93 @@ filetype off                  " required
 
 set encoding=utf-8
 
-" Vundle configuration
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+" Detectar si se está usando Neovim
+if has('nvim')
+  " Plugins esenciales para Neovim con vim-plug
+  if filereadable(expand('~/.local/share/nvim/site/autoload/plug.vim'))
+    call plug#begin('~/.local/share/nvim/plugged')
+    Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.4' }
+    Plug 'nvim-lua/plenary.nvim'
+    Plug 'nvim-tree/nvim-tree.lua'
+    Plug 'nvim-lualine/lualine.nvim'
+    Plug 'neovim/nvim-lspconfig'
+    Plug 'hrsh7th/nvim-cmp'
+    Plug 'hrsh7th/cmp-nvim-lsp'
+    Plug 'L3MON4D3/LuaSnip'
+    call plug#end()
+  endif
+  set clipboard=unnamedplus
+  set number
+  set relativenumber
+  set tabstop=2
+  set shiftwidth=2
+  set expandtab
+  set smarttab
+  set undofile
+  set undodir=~/.config/nvim/undodir
+  syntax enable
+  filetype plugin indent on
+else
+  " Vim clásico: solo plugins y opciones esenciales
+  if filereadable(expand('~/.vim/autoload/plug.vim'))
+    call plug#begin('~/.vim/plugged')
+    Plug 'junegunn/fzf.vim'
+    Plug 'scrooloose/nerdtree'
+    Plug 'tpope/vim-fugitive'
+    Plug 'airblade/vim-gitgutter'
+    Plug 'vim-airline/vim-airline'
+    call plug#end()
+  else
+    set rtp+=~/.vim/bundle/Vundle.vim
+    call vundle#begin()
+    Plugin 'VundleVim/Vundle.vim'
+    Plugin 'scrooloose/nerdtree'
+    Plugin 'tpope/vim-fugitive'
+    Plugin 'airblade/vim-gitgutter'
+    Plugin 'vim-airline/vim-airline'
+    call vundle#end()
+  endif
+  set clipboard=unnamed
+  set number
+  set relativenumber
+  set tabstop=2
+  set shiftwidth=2
+  set expandtab
+  set smarttab
+  set undofile
+  set undodir=~/.vim/undodir
+  syntax enable
+  filetype plugin indent on
+endif
 
-Plugin 'VundleVim/Vundle.vim'
+" Atajos útiles y multiplataforma
+noremap n nzz
+noremap N Nzz
+noremap <Up> <NOP>
+noremap <Down> <NOP>
+noremap <Left> <NOP>
+noremap <Right> <NOP>
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+let mapleader= " "
 
-Plugin 'scrooloose/nerdtree'
-Plugin 'tpope/vim-fugitive'
-Plugin 'Xuyuanp/nerdtree-git-plugin'
-Plugin 'airblade/vim-gitgutter'
-Plugin 'fatih/vim-go'
-Plugin 'terryma/vim-multiple-cursors'
-Plugin 'vim-airline/vim-airline'
-Plugin 'pangloss/vim-javascript'
-Plugin 'mxw/vim-jsx'
-Plugin 'leafgarland/typescript-vim'
-Plugin 'ntpeters/vim-better-whitespace'
-Plugin 'junegunn/fzf.vim'
-Plugin 'jiangmiao/auto-pairs'
-Plugin 'zxqfl/tabnine-vim'
-Plugin 'mitsuhiko/vim-jinja'
-Plugin 'hashivim/vim-terraform'
+" NERDTree
+map <C-n> :NERDTreeToggle<CR>
 
-au BufRead,BufNewFile *.twig set filetype=htmljinja
+" Airline
+let g:airline_powerline_fonts = 1
 
-call vundle#end()
-filetype plugin indent on
-
-execute pathogen#infect()
+" Clipboard multiplataforma
+if has('nvim') || has('unix')
+  let s:uname = system('uname')
+  if s:uname =~? 'Darwin'
+    set clipboard=unnamed
+  else
+    set clipboard=unnamedplus
+  endif
+endif
 
 " Color scheme & syntax configuration
 colorscheme molokai
@@ -48,20 +106,12 @@ set expandtab
 set swapfile
 set dir=/tmp
 set nojoinspaces
+set number
+set relativenumber
+set undofile
+set undodir=~/.vim/undodir
 
 let g:deoplete#enable_at_startup = 1
-
-" enable unnamedplus clipboard only on Linux
-if has("unix")
-  let s:uname = system("uname")
-  if s:uname != "Darwin\n"
-    set clipboard=unnamedplus
-  endif
-endif
-
-" enable undo through sessions
-set undofile "
-set undodir=~/.vim/undodir
 
 " Show next matched string at the center of the screen
 noremap n nzz
@@ -78,8 +128,6 @@ nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
-let mapleader= " "
-
 " multiple cursors
 let g:multi_cursor_use_default_mapping=0
 let g:multi_cursor_exit_from_visual_mode=1
@@ -88,9 +136,6 @@ let g:multi_cursor_next_key='<C-j>'
 let g:multi_cursor_prev_key='<C-k>'
 let g:multi_cursor_skip_key='<C-l>'
 let g:multi_cursor_quit_key='<Esc>'
-
-" nerdtree - open
-map <C-n> :NERDTreeToggle<CR>
 
 " nerdtree-git-plugin
 let g:NERDTreeIndicatorMapCustom = {
@@ -106,8 +151,6 @@ let g:NERDTreeIndicatorMapCustom = {
     \ }
 
 " go-vim
-set number
-
 let g:go_highlight_types = 1
 let g:go_highlight_extra_types = 1
 let g:go_highlight_fields = 1
@@ -155,15 +198,14 @@ endif
 " Avoid fzf to open files on NERDTree using this func
 function! FZFOpen(command_str)
   if (expand('%') =~# 'NERD_tree' && winnr('$') > 1)
-    exe "normal! \<c-w>\<c-w>"
+    exe "normal! <c-w><c-w>"
   endif
-  exe 'normal! ' . a:command_str . "\<cr>"
+  exe 'normal! ' . a:command_str . "<cr>"
 endfunction
 nnoremap <silent> <C-p> :call FZFOpen(':Files')<CR>
 
-
-let g:fzf_colors =
-  \ { 'fg':      ['fg', 'Normal'],
+let g:fzf_colors = {
+  \ 'fg':      ['fg', 'Normal'],
   \ 'bg':      ['bg', 'Normal'],
   \ 'hl':      ['fg', 'Comment'],
   \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
@@ -182,3 +224,5 @@ let g:fzf_history_dir = '~/.local/share/fzf-history'
 command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>), 1, <bang>0)
 
 nmap <leader>a :Find 
+
+" Recomendación: Si usas Neovim, usa LSP y plugins modernos como telescope.nvim, nvim-tree.lua, lualine.nvim, etc.

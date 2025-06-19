@@ -17,6 +17,10 @@
     discard = checkout --
     uncommit = reset --mixed HEAD~
     pr = !"pr() { git fetch origin pull/$1/head:pr-$1; git checkout pr-$1; }; pr"
+    lg = log --oneline --graph --decorate --all
+    lga = log --oneline --graph --decorate --all --abbrev-commit
+    last = log -1 HEAD
+    pr-clean = !git branch | grep 'pr-' | xargs git branch -D
 
 [push]
     default = matching

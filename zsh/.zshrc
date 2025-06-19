@@ -130,24 +130,50 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias k=kubecolor
-alias ls='eza --icons'
-source ~/powerlevel10k/powerlevel10k.zsh-theme
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+# Historial mejorado
+HISTFILE=~/.zsh_history
+HISTSIZE=2000
+SAVEHIST=4000
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_REDUCE_BLANKS
+setopt SHARE_HISTORY
 
-# The next line updates PATH for the Google Cloud SDK.
+# Editor por defecto
+export EDITOR="vim"
+
+# Alias multiplataforma y condicionales
+if command -v eza >/dev/null 2>&1; then
+    alias ls='eza --icons'
+    alias ll='eza -l --icons'
+    alias la='eza -a --icons'
+    alias l='eza -1 --icons'
+else
+    alias ls='ls --color=auto'
+    alias ll='ls -alF'
+    alias la='ls -A'
+    alias l='ls -CF'
+fi
+
+if command -v bat >/dev/null 2>&1; then
+    alias cat='bat'
+fi
+
+# Alias git útiles si no están en .gitconfig
+alias gs='git status'
+alias ga='git add'
+alias gc='git commit'
+alias gp='git push'
+alias gl='git pull'
+
+# Cargo
+[ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
+
+# Google Cloud SDK
 if [ -f '/usr/local/bin/google-cloud-sdk/path.zsh.inc' ]; then . '/usr/local/bin/google-cloud-sdk/path.zsh.inc'; fi
-
-# The next line enables shell command completion for gcloud.
 if [ -f '/usr/local/bin/google-cloud-sdk/completion.zsh.inc' ]; then . '/usr/local/bin/google-cloud-sdk/completion.zsh.inc'; fi
-#eval "$(starship init zsh)"
 
-#source "/opt/homebrew/opt/kube-ps1/share/kube-ps1.sh"
-#PS1='$(kube_ps1)'$PS1
-
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
+# Conda
 __conda_setup="$('/Users/alorenzo/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
@@ -159,7 +185,16 @@ else
     fi
 fi
 unset __conda_setup
-# <<< conda initialize <<<
 
+# Powerlevel10k
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-. "$HOME/.cargo/env"
+# PATH extra
+[ -d "$HOME/.local/bin" ] && PATH="$HOME/.local/bin:$PATH"
+[ -d "$HOME/bin" ] && PATH="$HOME/bin:$PATH"
+
+# Menos con color
+export LESS='-R'
+
+# Autocompletado
+autoload -Uz compinit && compinit

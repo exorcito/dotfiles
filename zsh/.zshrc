@@ -11,6 +11,17 @@ fi
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
+# Display hostname with toilet if available
+if [ -n "$TERM" ]; then
+    case "$TERM" in
+        xterm*|rxvt*|screen*)
+            if command -v toilet >/dev/null 2>&1; then
+                toilet -f future "$(hostname)"
+            fi
+            ;;
+    esac
+fi
+
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME

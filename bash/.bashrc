@@ -116,7 +116,9 @@ if ! shopt -oq posix; then
   fi
 fi
 
-. "$HOME/.cargo/env"
+if [ -f "$HOME/.cargo/env" ]; then
+    . "$HOME/.cargo/env"
+fi
 
 # PATH extra
 [ -d "$HOME/.local/bin" ] && PATH="$HOME/.local/bin:$PATH"

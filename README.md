@@ -1,6 +1,6 @@
 # Dotfiles 
 
-Este repositorio contiene mis configuraciones personales para bash, zsh, tmux, vim/neovim, git, y más. Está optimizado para funcionar en Linux, macOS, WSL, LXC y otros entornos.
+Este repositorio contiene mis configuraciones personales para bash, zsh, vim/neovim, git, y más. Está optimizado para funcionar en Linux, macOS, WSL, LXC y otros entornos.
 
 ## Estructura recomendada para GNU Stow
 
@@ -15,8 +15,6 @@ Cada grupo de dotfiles está en su propia carpeta:
 ├── zsh/
 │   ├── .zshrc
 │   └── .p10k.zsh
-├── tmux/
-│   └── .tmux.conf
 ├── vim/
 │   └── .vimrc
 ├── nvim/
@@ -41,7 +39,7 @@ Cada grupo de dotfiles está en su propia carpeta:
 
 3. Aplica los dotfiles que quieras. Por ejemplo:
    ```sh
-   stow -t ~ bash zsh tmux vim git
+   stow -t ~ bash zsh vim git
    ```
    Esto creará enlaces simbólicos en tu $HOME para cada archivo de configuración.
 
@@ -49,6 +47,8 @@ Cada grupo de dotfiles está en su propia carpeta:
    ```sh
    stow -t ~ nvim
    ```
+
+5. Personaliza los archivos locales si lo necesitas antes de aplicar Stow.
 
 5. Personaliza los archivos locales si lo necesitas antes de aplicar Stow.
 

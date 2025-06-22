@@ -56,9 +56,6 @@ extract () {
 # Top 10 procesos por CPU
 alias top10="ps -eo pcpu,pid,user,args | sort -k 1 -r | head -10"
 
-# TMUX: cerrar ventanas a la derecha
-alias tcr="for i in $(tmux list-windows | awk -v x=$(tmux display-message -p '#I') -F ':' '$1 > x {print $1}'); do tmux kill-window -t $i ; done"
-
 # Leer CSV bonito
 read_csv(){
     sed 's/,,/, ,/g;s/,,/, ,/g' "$1" | column -s, -t

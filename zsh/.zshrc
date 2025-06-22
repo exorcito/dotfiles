@@ -17,7 +17,7 @@ if [ -n "$TERM" ]; then
         xterm*|rxvt*|screen*)
             if command -v toilet >/dev/null 2>&1; then
                 toilet -f future "$(hostname)"
-                echo -e "🖥️  vCPU: $(nproc) cores / RAM: $(free -h | awk '/Mem:/ {print $3 \"/\" $2}') / Disco: $(df -h / | awk 'NR==2 {print $3 \"/\" $2}') / Uptime: $(uptime -p | sed 's/up //')\n"
+                echo -e "🖥<fe0f>  vCPU: $(nproc) cores / RAM: $(free -h | awk '/Mem:/ {print $3 \"/\" $2}') / Disco: $(df -h / | awk 'NR==2 {print $3 \"/\" $2}') / Uptime: $(uptime -p | sed 's/up //')\n" | lolcat
             fi
             ;;
     esac

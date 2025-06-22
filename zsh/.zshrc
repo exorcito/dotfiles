@@ -17,10 +17,28 @@ if [ -n "$TERM" ]; then
         xterm*|rxvt*|screen*)
             if command -v toilet >/dev/null 2>&1; then
                 toilet -f future "$(hostname)"
-                echo -e "🖥<fe0f>  vCPU: $(nproc) cores / RAM: $(free -h | awk '/Mem:/ {print $3 \"/\" $2}') / Disco: $(df -h / | awk 'NR==2 {print $3 \"/\" $2}') / Uptime: $(uptime -p | sed 's/up //')\n" | lolcat
+                # Verificar si lolcat está instalado y usarlo si está disponible
+                if command -v lolcat >/dev/null 2>&1; then
+                    LOLCAT="lolcat"
+                else
+                    LOLCAT="cat"
+                fi
+                
+                # Mostrar información del sistema
+                echo -e "🖥️  vCPU: $(nproc) cores" | $LOLCAT
+                echo -e "RAM: $(free -h | awk '/Mem:/ {print $3 " / " $2}')" | $LOLCAT
+                echo -e "Disco: $(df -h / | awk 'NR==2 {print $3 " / " $2}')" | $LOLCAT
+                echo -e "Uptime: $(uptime -p | sed 's/up //')" | $LOLCAT
             fi
             ;;
     esac
+fi
+
+# Instalar lolcat si no está disponible
+if ! command -v lolcat >/dev/null 2>&1; then
+    if command -v brew >/dev/null 2>&1; then
+        brew install lolcat
+    fi
 fi
 
 # Set name of the theme to load --- if set to "random", it will

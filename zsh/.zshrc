@@ -17,10 +17,7 @@ if [ -n "$TERM" ]; then
         xterm*|rxvt*|screen*)
             if command -v toilet >/dev/null 2>&1; then
                 toilet -f future "$(hostname)"
-                cpu_usage=$(top -bn1 | grep "%Cpu" | awk '"'"'{print 100 - $8 "%"}'"'"')
-                mem_usage=$(free -h | awk '"'"'/Mem:/ {print $3 "/" $2}'"'"')
-                disk_usage=$(df -h / | awk '"'"'NR==2 {print $3 "/" $2}'"'"')
-                echo "🖥️ CPU: $cpu_usage | Mem: $mem_usage | Disk: $disk_usage\n"
+                echo -e "🖥️  vCPU: $(nproc) cores / RAM: $(free -h | awk '/Mem:/ {print $3 \"/\" $2}') / Disco: $(df -h / | awk 'NR==2 {print $3 \"/\" $2}') / Uptime: $(uptime -p | sed 's/up //')\n"
             fi
             ;;
     esac

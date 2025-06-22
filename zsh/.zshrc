@@ -15,14 +15,15 @@ export ZSH="$HOME/.oh-my-zsh"
 if [ -n "$TERM" ]; then
     case "$TERM" in
         xterm*|rxvt*|screen*)
+            # Verificar si lolcat está instalado en Linuxbrew
+            if [ -f "/home/linuxbrew/.linuxbrew/bin/lolcat" ]; then
+                export LOLCAT="/home/linuxbrew/.linuxbrew/bin/lolcat"
+            else
+                export LOLCAT="cat"
+            fi
+            
             if command -v toilet >/dev/null 2>&1; then
-                toilet -f future "$(hostname)"
-                # Verificar si lolcat está instalado y usarlo si está disponible
-                if command -v lolcat >/dev/null 2>&1; then
-                    LOLCAT="lolcat"
-                else
-                    LOLCAT="cat"
-                fi
+                toilet -f future "$(hostname)" | $LOLCAT
                 
                 # Mostrar información del sistema en una línea
                 INFO="🖥️  vCPU: $(nproc) cores | RAM: $(free -h | awk '/Mem:/ {print $3 " / " $2}') | Disco: $(df -h / | awk 'NR==2 {print $3 " / " $2}') | Uptime: $(uptime -p | sed 's/up //')"

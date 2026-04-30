@@ -43,13 +43,7 @@ git clone https://github.com/zsh-users/zsh-syntax-highlighting "$ZSH_CUSTOM/plug
 
 # --- Stow: crear symlinks ---
 cd "$DOTFILES"
-PACKAGES=(zsh tmux nvim)
-[[ "$OS" == "Darwin" ]] || [[ -n "$DISPLAY" ]] && PACKAGES+=(ghostty)
-
-for pkg in "${PACKAGES[@]}"; do
-  echo "Stowing $pkg..."
-  stow -t ~ --restow "$pkg" 2>/dev/null || stow -t ~ "$pkg"
-done
+stow -t ~ --restow . 2>/dev/null || stow -t ~ .
 
 # --- Plugins tmux ---
 ~/.tmux/plugins/tpm/bin/install_plugins

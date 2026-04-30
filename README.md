@@ -1,56 +1,60 @@
-# Dotfiles 
+# dotfiles
 
-Este repositorio contiene mis configuraciones personales para bash, zsh, vim/neovim, git, y más. Está optimizado para funcionar en Linux, macOS, WSL, LXC y otros entornos.
+My personal dotfiles for macOS, Linux and WSL, managed with [GNU Stow](https://www.gnu.org/software/stow/).
 
-## Estructura recomendada para GNU Stow
+## Stack
 
-Cada grupo de dotfiles está en su propia carpeta:
+| Tool | Role |
+|---|---|
+| [Ghostty](https://ghostty.org) | Terminal emulator |
+| [tmux](https://github.com/tmux/tmux) | Terminal multiplexer |
+| [Neovim](https://neovim.io) + [LazyVim](https://lazyvim.org) | Editor |
+| [Oh My Zsh](https://ohmyz.sh) + [PowerLevel10k](https://github.com/romkatv/powerlevel10k) | Shell |
+| [Catppuccin Mocha](https://github.com/catppuccin/catppuccin) | Theme (Ghostty + tmux + Neovim) |
 
-```
-.
-├── bash/
-│   ├── .bashrc
-│   ├── .profile
-│   └── .bash_aliases
-├── zsh/
-│   ├── .zshrc
-│   └── .p10k.zsh
-├── vim/
-│   └── .vimrc
-├── nvim/
-│   └── init.vim (o configuración Lua)
-├── git/
-│   └── .gitconfig
-└── README.md
+## Install
+
+```sh
+git clone https://github.com/exorcito/dotfiles ~/dotfiles
+~/dotfiles/install.sh
 ```
 
-## Instalación con Stow
+The script installs all dependencies and runs `stow .` to symlink everything into `~`.
 
-1. Instala Stow:
-   - Debian/Ubuntu: `sudo apt install stow`
-   - macOS: `brew install stow`
-   - Arch: `sudo pacman -S stow`
+## Manual steps after install
 
-2. Clona este repositorio en tu home:
-   ```sh
-   git clone https://github.com/tuusuario/dotfiles.git ~/dotfiles
-   cd ~/dotfiles
-   ```
+1. Open Ghostty — tmux starts automatically
+2. Run `p10k configure` to set up the shell prompt
+3. Open `nvim` — LazyVim installs plugins on first launch
 
-3. Aplica los dotfiles que quieras. Por ejemplo:
-   ```sh
-   stow -t ~ bash zsh vim git
-   ```
-   Esto creará enlaces simbólicos en tu $HOME para cada archivo de configuración.
+## Stow
 
-4. Si usas Neovim:
-   ```sh
-   stow -t ~ nvim
-   ```
+To re-apply symlinks manually:
 
-5. Personaliza los archivos locales si lo necesitas antes de aplicar Stow.
+```sh
+cd ~/dotfiles && stow -t ~ .
+```
 
-5. Personaliza los archivos locales si lo necesitas antes de aplicar Stow.
+## Keybindings (tmux via Ghostty)
 
-## Notas
-- Los dotfiles detectan automáticamente las herramientas si están instaladas.
+| Action | Shortcut |
+|---|---|
+| New window | `Cmd+T` |
+| Close pane | `Cmd+W` |
+| Split right | `Cmd+D` |
+| Split down | `Cmd+Shift+D` |
+| Navigate panes | `Cmd+↑↓←→` |
+| Next / prev window | `Cmd+]` / `Cmd+[` |
+| Go to window N | `Cmd+1…9` |
+| Zoom pane | `Ctrl+A Z` |
+| Rename window | `Ctrl+A ,` |
+| Reload tmux config | `Ctrl+A R` |
+
+## OS support
+
+| | macOS | Linux | WSL |
+|---|:---:|:---:|:---:|
+| zsh + P10K | ✅ | ✅ | ✅ |
+| tmux | ✅ | ✅ | ✅ |
+| Neovim | ✅ | ✅ | ✅ |
+| Ghostty | ✅ | ✅ | ⚠️ |

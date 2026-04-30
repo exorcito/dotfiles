@@ -1,0 +1,58 @@
+# Font
+font-family = MesloLGS NF
+font-size = 13
+
+# Theme
+theme = Catppuccin Mocha
+
+# Window
+window-padding-x = 8
+window-padding-y = 8
+window-decoration = true
+macos-titlebar-style = hidden
+
+# Cursor
+cursor-style = bar
+cursor-style-blink = true
+
+# Shell
+shell-integration = zsh
+shell-integration-features = cursor,sudo,title
+
+# Performance
+window-vsync = true
+
+# Keybindings — todo delegado a tmux via secuencias de escape
+# \x01 = Ctrl+A (prefix de tmux)
+
+# Splits
+keybind = cmd+d=text:\x01|
+keybind = cmd+shift+d=text:\x01-
+
+# Ventanas
+keybind = cmd+t=text:\x01c
+keybind = cmd+w=text:\x01x
+
+# Ir a ventana por número (cmd+1-9)
+keybind = super+digit_1=text:\x01\x31
+keybind = super+digit_2=text:\x01\x32
+keybind = super+digit_3=text:\x01\x33
+keybind = super+digit_4=text:\x01\x34
+keybind = super+digit_5=text:\x01\x35
+keybind = super+digit_6=text:\x01\x36
+keybind = super+digit_7=text:\x01\x37
+keybind = super+digit_8=text:\x01\x38
+keybind = super+digit_9=text:\x01\x39
+
+# Navegar ventanas (cmd+[ / cmd+])
+keybind = super+[=text:\x01\x70
+keybind = super+]=text:\x01\x6e
+
+# Navegar paneles
+keybind = cmd+left=text:\x01h
+keybind = cmd+right=text:\x01l
+keybind = cmd+up=text:\x01k
+keybind = cmd+down=text:\x01j
+
+# Pantalla completa (esto sí lo maneja Ghostty)
+keybind = cmd+enter=toggle_fullscreen

@@ -16,14 +16,15 @@ My personal dotfiles for macOS, Linux, WSL and LXC, managed with [GNU Stow](http
 
 ```
 .
-├── bash/            # .bashrc, .profile, .bash_aliases (Mac + LXC)
-├── zsh/             # .zshrc + .p10k.zsh with Powerlevel10k (Mac)
-├── lxc/             # .zshrc without p10k, .gitconfig without osxkeychain (LXC/homelab)
+├── .config/         # Ghostty, tmux, Neovim/LazyVim (Mac)
+├── .zshrc           # Mac shell: Oh My Zsh + PowerLevel10k
+├── .p10k.zsh        # PowerLevel10k config
+├── lxc/             # LXC package: .zshrc (robbyrussell) + .gitconfig
+├── bash/            # Shared: .bashrc, .profile, .bash_aliases
 ├── vim/             # .vimrc (Mac + LXC)
-├── nvim/            # init.vim with LSP and Telescope (Mac)
 ├── git/             # .gitconfig with osxkeychain (Mac)
 └── scripts/
-    └── lxc-bootstrap.sh  # automated bootstrap for fresh Debian/Ubuntu LXC
+    └── lxc-bootstrap.sh
 ```
 
 ## Install (Mac)
@@ -44,7 +45,7 @@ The script installs all dependencies and runs `stow .` to symlink everything int
 ### Stow manually
 
 ```sh
-cd ~/dotfiles && stow -t ~ bash zsh vim nvim git
+cd ~/dotfiles && stow -t ~ .
 ```
 
 ## Install (LXC / Linux)

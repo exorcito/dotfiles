@@ -1,7 +1,10 @@
 README.md
+CLAUDE.md
 install.sh
 bash
 git
 vim
+lxc
+scripts
 \.git
 \.stow-local-ignore

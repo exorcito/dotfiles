@@ -1,64 +1,59 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to Claude Code when working with this repository.
 
 ## What This Repo Is
 
-Personal dotfiles managed with [GNU Stow](https://www.gnu.org/software/stow/). Each top-level directory (`bash/`, `zsh/`, `vim/`, `nvim/`, `git/`) is a Stow package that gets symlinked into `~`.
+Personal dotfiles managed with [GNU Stow](https://www.gnu.org/software/stow/), supporting macOS and LXC/Linux environments with separate configs where needed.
 
-## Installation
+## Structure
 
-```bash
-cd ~/dotfiles
-stow -t ~ bash zsh vim git nvim
+```
+dotfiles/
+  .config/            # ~/.config/* (Mac: Ghostty, tmux, Neovim/LazyVim)
+  .zshrc              # Mac zsh config (Oh My Zsh + PowerLevel10k)
+  .p10k.zsh           # PowerLevel10k prompt config
+  lxc/                # LXC-specific stow package
+    .zshrc            # Lightweight zsh (robbyrussell, no P10K)
+    .gitconfig        # Git without osxkeychain
+  bash/               # Shared bash config (Mac + LXC)
+  vim/                # .vimrc (Mac + LXC)
+  git/                # .gitconfig with osxkeychain (Mac only)
+  scripts/
+    lxc-bootstrap.sh  # One-liner bootstrap for Debian/Ubuntu LXC
+  install.sh          # Mac bootstrap script
 ```
 
-To install a single package:
+## Stow Usage
+
+**Mac** — stow the flat root (`.zshrc`, `.p10k.zsh`, `.config/`):
 ```bash
-stow -t ~ bash
+cd ~/dotfiles && stow -t ~ .
 ```
 
-To remove (unstow):
+**LXC / Linux** — stow specific packages:
 ```bash
-stow -D -t ~ bash
+cd ~/dotfiles && stow -t ~ bash lxc vim
 ```
 
-## Architecture
+`.stow-local-ignore` prevents `lxc/`, `bash/`, `vim/`, `git/`, `scripts/` from being picked up by `stow .` on Mac.
 
-Each directory mirrors the target structure relative to `~`. For example:
-- `bash/.bashrc` → `~/.bashrc`
-- `vim/.vimrc` → `~/.vimrc`
-- `nvim/.config/nvim/init.vim` → `~/.config/nvim/init.vim`
-
-**Shell loading order:**
-1. `.profile` — login shell, sets up Cargo/Rust PATH, sources `.bashrc`
-2. `.bashrc` — non-login interactive shell (history, prompt, tool detection)
-3. `.bash_aliases` — aliases shared across bash and zsh, loaded by both
-
-**Tool detection pattern** used throughout `.bashrc` / `.bash_aliases`:
-```bash
-if command -v eza &>/dev/null; then alias ls='eza ...'; fi
-```
-Always follow this pattern when adding aliases for optional tools.
-
-## Key Alias/Config Locations
+## Key Files
 
 | File | Purpose |
 |------|---------|
-| `bash/.bash_aliases` | Cross-shell aliases (eza, bat, git shortcuts, docker, etc.) |
-| `zsh/.zshrc` | Oh-My-Zsh setup, plugins, zsh-specific config |
-| `zsh/.p10k.zsh` | Powerlevel10k prompt (CPU, RAM, disk, uptime segments) |
-| `git/.gitconfig` | Git aliases: `gs`, `ga`, `gc`, `gp`, `lg`, `pr`, `pr-clean` |
-| `vim/.vimrc` | Vim with vim-plug; Go, JS/JSX support |
-| `nvim/.config/nvim/init.vim` | Neovim with LSP, Telescope, Lua plugins |
+| `.zshrc` | Mac shell: Oh My Zsh, P10K, Ghostty auto-start tmux |
+| `.config/ghostty/config` | Ghostty: Catppuccin Mocha, keybindings delegated to tmux |
+| `.config/tmux/tmux.conf` | tmux: Ctrl+A prefix, Catppuccin v2, resurrect/continuum |
+| `.config/nvim/` | Neovim: LazyVim + Catppuccin Mocha |
+| `lxc/.zshrc` | LXC shell: Oh My Zsh, robbyrussell, banner with toilet |
+| `bash/.bash_aliases` | Cross-shell aliases (eza, bat, git, docker) |
 
 ## Testing Changes
 
-There are no automated tests. To validate after editing:
 ```bash
-source ~/.bashrc          # reload bash config
-source ~/.zshrc           # reload zsh config
-source ~/.p10k.zsh        # reload prompt theme
+source ~/.zshrc        # reload zsh
+tmux source ~/.config/tmux/tmux.conf  # reload tmux (or Ctrl+A R)
 ```
 
-For Vim/Neovim changes, they take effect on next editor launch or via `:source %` inside the editor.
+Neovim changes take effect on next launch or `:Lazy sync` inside nvim.

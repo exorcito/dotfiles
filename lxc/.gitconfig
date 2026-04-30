@@ -1,0 +1,25 @@
+[user]
+	email = exorcito@gmail.com
+	name = Alberto Lorenzo
+
+[alias]
+    cm = commit -am
+    st = status
+    co = checkout
+    amend = commit --amend -s
+    commit = commit -s
+    branches = branch -a
+    tags = tag
+    stashes = stash list
+    unstage = reset -q HEAD --
+    discard = checkout --
+    uncommit = reset --mixed HEAD~
+    lg = log --oneline --graph --decorate --all
+    lga = log --oneline --graph --decorate --all --abbrev-commit
+    last = log -1 HEAD
+
+[push]
+    default = matching
+
+[rebase]
+    autoStash = true

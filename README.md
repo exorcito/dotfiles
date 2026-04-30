@@ -1,6 +1,6 @@
 # dotfiles
 
-My personal dotfiles for macOS, Linux and WSL, managed with [GNU Stow](https://www.gnu.org/software/stow/).
+My personal dotfiles for macOS, Linux, WSL and LXC, managed with [GNU Stow](https://www.gnu.org/software/stow/).
 
 ## Stack
 
@@ -12,7 +12,21 @@ My personal dotfiles for macOS, Linux and WSL, managed with [GNU Stow](https://w
 | [Oh My Zsh](https://ohmyz.sh) + [PowerLevel10k](https://github.com/romkatv/powerlevel10k) | Shell |
 | [Catppuccin Mocha](https://github.com/catppuccin/catppuccin) | Theme (Ghostty + tmux + Neovim) |
 
-## Install
+## Structure
+
+```
+.
+├── bash/            # .bashrc, .profile, .bash_aliases (Mac + LXC)
+├── zsh/             # .zshrc + .p10k.zsh with Powerlevel10k (Mac)
+├── lxc/             # .zshrc without p10k, .gitconfig without osxkeychain (LXC/homelab)
+├── vim/             # .vimrc (Mac + LXC)
+├── nvim/            # init.vim with LSP and Telescope (Mac)
+├── git/             # .gitconfig with osxkeychain (Mac)
+└── scripts/
+    └── lxc-bootstrap.sh  # automated bootstrap for fresh Debian/Ubuntu LXC
+```
+
+## Install (Mac)
 
 ```sh
 git clone https://github.com/exorcito/dotfiles ~/dotfiles
@@ -21,18 +35,32 @@ git clone https://github.com/exorcito/dotfiles ~/dotfiles
 
 The script installs all dependencies and runs `stow .` to symlink everything into `~`.
 
-## Manual steps after install
+### Manual steps after install
 
 1. Open Ghostty — tmux starts automatically
 2. Run `p10k configure` to set up the shell prompt
 3. Open `nvim` — LazyVim installs plugins on first launch
 
-## Stow
-
-To re-apply symlinks manually:
+### Stow manually
 
 ```sh
-cd ~/dotfiles && stow -t ~ .
+cd ~/dotfiles && stow -t ~ bash zsh vim nvim git
+```
+
+## Install (LXC / Linux)
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/exorcito/dotfiles/main/scripts/lxc-bootstrap.sh | bash
+```
+
+Installs: zsh, oh-my-zsh, plugins, eza, bat, toilet, fzf, then stows `bash lxc vim`.
+
+Or manually:
+
+```sh
+git clone https://github.com/exorcito/dotfiles.git ~/dotfiles
+cd ~/dotfiles
+stow -t ~ bash lxc vim
 ```
 
 ## Keybindings (tmux via Ghostty)
@@ -52,9 +80,10 @@ cd ~/dotfiles && stow -t ~ .
 
 ## OS support
 
-| | macOS | Linux | WSL |
-|---|:---:|:---:|:---:|
-| zsh + P10K | ✅ | ✅ | ✅ |
-| tmux | ✅ | ✅ | ✅ |
-| Neovim | ✅ | ✅ | ✅ |
-| Ghostty | ✅ | ✅ | ⚠️ |
+| | macOS | Linux | WSL | LXC |
+|---|:---:|:---:|:---:|:---:|
+| zsh + P10K | ✅ | ✅ | ✅ | ❌ |
+| zsh + robbyrussell | ✅ | ✅ | ✅ | ✅ |
+| tmux | ✅ | ✅ | ✅ | ⚠️ |
+| Neovim | ✅ | ✅ | ✅ | ⚠️ |
+| Ghostty | ✅ | ✅ | ⚠️ | ❌ |

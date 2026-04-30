@@ -125,12 +125,17 @@ export LC_ALL=es_ES.UTF-8
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh" || true
-
-
-# Added by LM Studio CLI (lms)
-export PATH="$PATH:/Users/alorenzo/.lmstudio/bin"
-
-# Added by Windsurf
-export PATH="/Users/alorenzo/.codeium/windsurf/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
+
+# macOS específico
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  [[ -f /opt/homebrew/bin/brew ]] && eval "$(/opt/homebrew/bin/brew shellenv)"
+  [[ -f /usr/local/bin/brew ]] && eval "$(/usr/local/bin/brew shellenv)"
+  export PATH="$PATH:$HOME/.lmstudio/bin"
+  export PATH="$HOME/.codeium/windsurf/bin:$PATH"
+fi
+
+# Linux / WSL específico
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+  [[ -f /home/linuxbrew/.linuxbrew/bin/brew ]] && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+fi

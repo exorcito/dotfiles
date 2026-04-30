@@ -41,6 +41,11 @@ git clone https://github.com/zsh-users/zsh-syntax-highlighting "$ZSH_CUSTOM/plug
 # --- TPM (tmux plugins) ---
 [[ ! -d "$HOME/.tmux/plugins/tpm" ]] && git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
+# --- Backup dotfiles existentes antes de stow ---
+for f in .zshrc .p10k.zsh; do
+  [[ -f "$HOME/$f" && ! -L "$HOME/$f" ]] && mv "$HOME/$f" "$HOME/$f.bak" && echo "Backup: $f → $f.bak"
+done
+
 # --- Stow: crear symlinks ---
 cd "$DOTFILES"
 stow -t ~ --restow . 2>/dev/null || stow -t ~ .

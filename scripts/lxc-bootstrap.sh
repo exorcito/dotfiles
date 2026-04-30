@@ -8,17 +8,33 @@ DOTFILES_DIR="$HOME/dotfiles"
 apt-get update -qq
 apt-get install -y -qq git stow zsh toilet figlet fzf curl
 
+ARCH="$(uname -m)"
+
 # eza (modern ls)
 if ! command -v eza &>/dev/null; then
-    curl -fsSL https://github.com/eza-community/eza/releases/latest/download/eza_x86_64-unknown-linux-musl.tar.gz \
-        | tar xz -C /usr/local/bin eza
+    case "$ARCH" in
+        x86_64)  EZA_ARCH="x86_64-unknown-linux-musl" ;;
+        aarch64) EZA_ARCH="aarch64-unknown-linux-musl" ;;
+        *)       echo "eza: arquitectura $ARCH no soportada, saltando"; EZA_ARCH="" ;;
+    esac
+    if [[ -n "$EZA_ARCH" ]]; then
+        curl -fsSL "https://github.com/eza-community/eza/releases/latest/download/eza_${EZA_ARCH}.tar.gz" \
+            | tar xz -C /usr/local/bin eza
+    fi
 fi
 
 # bat (modern cat)
 if ! command -v bat &>/dev/null; then
-    BAT_VER=$(curl -s https://api.github.com/repos/sharkdp/bat/releases/latest | grep '"tag_name"' | cut -d'"' -f4)
-    curl -fsSL "https://github.com/sharkdp/bat/releases/latest/download/bat_${BAT_VER#v}_amd64.deb" -o /tmp/bat.deb
-    dpkg -i /tmp/bat.deb && rm /tmp/bat.deb
+    case "$ARCH" in
+        x86_64)  BAT_DEB_ARCH="amd64" ;;
+        aarch64) BAT_DEB_ARCH="arm64" ;;
+        *)       echo "bat: arquitectura $ARCH no soportada, saltando"; BAT_DEB_ARCH="" ;;
+    esac
+    if [[ -n "$BAT_DEB_ARCH" ]]; then
+        BAT_VER=$(curl -s https://api.github.com/repos/sharkdp/bat/releases/latest | grep '"tag_name"' | cut -d'"' -f4)
+        curl -fsSL "https://github.com/sharkdp/bat/releases/latest/download/bat_${BAT_VER#v}_${BAT_DEB_ARCH}.deb" -o /tmp/bat.deb
+        dpkg -i /tmp/bat.deb && rm /tmp/bat.deb
+    fi
 fi
 
 # oh-my-zsh
@@ -50,6 +66,6 @@ done
 stow -t "$HOME" bash lxc vim
 
 # Set zsh as default shell
-chsh -s "$(command -v zsh)" root
+chsh -s "$(command -v zsh)" "$USER"
 
 echo "Done. Re-login to start zsh."

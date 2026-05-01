@@ -5,6 +5,7 @@ bash
 git
 vim
 lxc
+windows
 scripts
 \.git
 \.stow-local-ignore

@@ -55,4 +55,5 @@ keybind = cmd+up=text:\x01k
 keybind = cmd+down=text:\x01j
 
 # Pantalla completa (esto sí lo maneja Ghostty)
-keybind = cmd+enter=toggle_fullscreen
+keybind = cmd+enter=unbind
+keybind = cmd+shift+enter=toggle_fullscreen

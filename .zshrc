@@ -139,3 +139,5 @@ fi
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
   [[ -f /home/linuxbrew/.linuxbrew/bin/brew ]] && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 fi
+
+eval "$(zoxide init zsh)"

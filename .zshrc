@@ -141,3 +141,7 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
 fi
 
 eval "$(zoxide init zsh)"
+
+# macOS tools (opencode)
+[[ -d "$HOME/.opencode/bin" ]] && export PATH="$HOME/.opencode/bin:$PATH"
+
